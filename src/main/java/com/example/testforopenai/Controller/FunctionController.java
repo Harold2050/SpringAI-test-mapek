@@ -17,11 +17,23 @@ public class FunctionController {
     //Function<T,R>表示接收T参数，返回R参数。Function内部的apply方法则是：R apply(T t)。即返回R，以T为传入的形参
     public Function<TestObject,String> TestFunction() {
         return request -> {
-            //apply调用退订方法
+            //apply调用方法
             System.out.println("first parameter:"+request.a()+"\n"+"second parameter:"+request.b());
             return "Test Function successfully!";
         };  //注意这里要加“;”
     }
+
+    @Bean
+    @Description("演化计划")
+    //Function<T,R>表示接收T参数，返回R参数。Function内部的apply方法则是：R apply(T t)。即返回R，以T为传入的形参
+    public Function<TestObject,String> TestFunction2() {
+        return request -> {
+            //apply调用方法
+            System.out.println("first parameter:"+request.a()+"\n"+"second parameter:"+request.b());
+            return "Test Function successfully!";
+        };  //注意这里要加“;”
+    }
+
 
     //上面用到了lambda表达式。Lambda 表达式的主要作用是为 函数式接口 提供实现。
     //而Function就是一个函数式接口，它有一个 apply 方法

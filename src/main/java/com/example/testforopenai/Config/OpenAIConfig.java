@@ -1,5 +1,6 @@
 package com.example.testforopenai.Config;
 
+import com.example.testforopenai.Service.LoggingAdvisor;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.PromptChatMemoryAdvisor;
 import org.springframework.ai.chat.client.advisor.QuestionAnswerAdvisor;
@@ -35,6 +36,7 @@ public class OpenAIConfig {
         return builder.defaultSystem("你是 SerChat，一个专业的微服务对话助手，你要时刻强调自己作为SerChat微服务对话助手的身份，以便于客户知晓。" +
                         "你能够深入分析用户关于微服务的需求，并提供精准的解决方案。" +
                         "在进行微服务组合前你需要询问用户两个微服务的名称,然后直接调用函数进行组合。" +
+                        "如果用户想要生成演化计划，你必须向用户索取演化计划的名称和ID这两个参数"+
                         "在询问⽤户之前，请检查消息历史记录以获取此信息。" )
                 //其他信息挂载到了RagStore中
                 .defaultAdvisors(
@@ -44,12 +46,14 @@ public class OpenAIConfig {
                         // PromptChatMemoryAdvisor 会根据传入的 chatMemory，在每次与用户对话时，存储和检索聊天记录。
                         //实现对话记忆的第二步
 
+                        new LoggingAdvisor(),  // 用于日志记录，类在service下
+
                         new QuestionAnswerAdvisor(vectorStore, SearchRequest.defaults())//RAG
                                 //QuestionAnswerAdvisor可以在⽤户发起的提问时，先向数据库查询相关的⽂档，再把相关的⽂档拼接到⽤户的提问中，再让模型⽣成答案。那就是 RAG 的实现了。
                                 //.defaults()实际上代表检索的内容为空，即检索数据库中的所有内容
                 )
 
-                .defaultFunctions("TestFunction")
+                .defaultFunctions("TestFunction","TestFunction2")
                 .build();
     }
 

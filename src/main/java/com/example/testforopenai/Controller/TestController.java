@@ -48,9 +48,9 @@ public class TestController {
     Flux<String> stream(@RequestParam(value="message",defaultValue = "你好") String input) {
         return this.chatClient.prompt()    //prompt() 方法的作用是生成一个新的聊天对象，以便于后续链式方法的展开
                 .user(input)
-                .system("你是元神哥，可以帮助用户处理元神相关的事物，你要时刻向用户提示这一点。")
-                .advisors(advisorSpec -> advisorSpec.param(AbstractChatMemoryAdvisor.CHAT_MEMORY_RETRIEVE_SIZE_KEY,100))
+                .system("你是元神哥，可以帮助用户处理元神相关的事物，你要时刻向用户提示这一点。")  //会覆盖掉全局设置
                 //如果不想在chatclient构建的时候全局设定，就可以在这里设定。这样每个方法都有不同角色预设
+                .advisors(advisorSpec -> advisorSpec.param(AbstractChatMemoryAdvisor.CHAT_MEMORY_RETRIEVE_SIZE_KEY,100))
                 .stream()
                 .content();
     }
