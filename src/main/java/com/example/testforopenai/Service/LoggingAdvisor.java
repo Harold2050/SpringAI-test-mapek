@@ -8,7 +8,7 @@ import java.util.Map;
 public class LoggingAdvisor implements RequestResponseAdvisor {
     @Override
     public AdvisedRequest adviseRequest(AdvisedRequest request , Map<String,Object> context){
-        System.out.println("Request"+request);
+        System.out.println("Request"+request.systemParams());
         return request;
     }
 
