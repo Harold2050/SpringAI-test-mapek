@@ -31,6 +31,7 @@ public class TestController {
 
     @GetMapping("/chat")
     String generation(@RequestParam(value="message",defaultValue = "你好") String input) {
+
         return this.chatClient.prompt()    //prompt() 方法的作用是生成一个新的聊天对象，以便于后续链式方法的展开
                 .user(input)
                 .advisors(advisorSpec -> advisorSpec.param(AbstractChatMemoryAdvisor.CHAT_MEMORY_RETRIEVE_SIZE_KEY,100))
