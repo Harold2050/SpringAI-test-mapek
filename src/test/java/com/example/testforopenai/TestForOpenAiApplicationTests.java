@@ -5,6 +5,7 @@ import com.example.testforopenai.Entity.Message;
 import com.example.testforopenai.Mapper.ConversationMapper;
 import com.example.testforopenai.Mapper.MessageMapper;
 import org.junit.jupiter.api.Test;
+import org.springframework.ai.chat.memory.ChatMemory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -16,6 +17,10 @@ class TestForOpenAiApplicationTests {
 
     @Autowired
     MessageMapper messageMapper;
+
+    @Autowired
+    ChatMemory chatMemory;
+
     @Test
     public void test_Conversation(){
 
@@ -28,8 +33,11 @@ class TestForOpenAiApplicationTests {
         conversation.setCreate_time(new java.sql.Timestamp(System.currentTimeMillis()));
         conversation.setUpdate_time(new java.sql.Timestamp(System.currentTimeMillis()));
         conversation.setMetadata("test");
-        conversationMapper.insert(conversation);
+        //conversationMapper.insert(conversation);
         //conversationMapper.update(conversation);
+        conversationMapper.delete_by_id(3);
+        conversationMapper.delete_by_id(4);
+        conversationMapper.delete_by_id(5);
 
     }
     @Test
@@ -40,13 +48,16 @@ class TestForOpenAiApplicationTests {
         message.setMessage("test");
         message.setOrder(1);
         message.setStatus("test");
-        messageMapper.insert(message);
+        //messageMapper.insert(message);
         //messageMapper.update(message);
-        //messageMapper.delete_by_convo_id(1);
+        messageMapper.delete_by_convo_id(111);
+        messageMapper.delete_by_convo_id(999);
     }
 
     @Test
     public void test_ChatControl(){
-
+        System.out.println("===============================================\n");
+        System.out.println("真正的chatmemory"+chatMemory);
+        System.out.println("===============================================\n");
     }
 }

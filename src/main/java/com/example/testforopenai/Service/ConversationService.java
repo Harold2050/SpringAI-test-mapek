@@ -1,6 +1,9 @@
 package com.example.testforopenai.Service;
 
 import com.example.testforopenai.Entity.Conversation;
+import com.example.testforopenai.Entity.Message;
+
+import java.util.List;
 
 public interface ConversationService {
 
@@ -29,5 +32,5 @@ public interface ConversationService {
      * 切换会话
      * @param id  历史会话的ID
      */
-    Conversation change(Integer id);
+    List<Message> change(Integer id);
 }

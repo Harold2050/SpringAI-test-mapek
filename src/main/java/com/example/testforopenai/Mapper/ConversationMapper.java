@@ -37,4 +37,11 @@ public interface ConversationMapper {
      */
     @Select("select * from conversation where id=#{id}")
     public Conversation get_by_id(Integer id);
+
+    /**
+     * 根据id删除会话
+     * @param id
+     */
+    @Delete("delete from conversation where id=#{id}")
+    public void delete_by_id(Integer id);
 }

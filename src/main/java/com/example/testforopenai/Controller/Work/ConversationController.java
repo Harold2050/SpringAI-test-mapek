@@ -1,11 +1,17 @@
 package com.example.testforopenai.Controller.Work;
 
 
-import com.example.testforopenai.Entity.Conversation;
+import com.example.testforopenai.Entity.Message;
 import com.example.testforopenai.Service.ConversationService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.ai.chat.memory.ChatMemory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 
 @Slf4j
@@ -16,6 +22,8 @@ public class ConversationController {
     @Autowired
     private ConversationService conversationService;
 
+    @Autowired
+    ChatMemory chatMemory;
 
     /**
      * 保存会话,将当前会话存入conversation表中（更新conversation？），将每句话存入message表中
@@ -35,8 +43,10 @@ public class ConversationController {
      * @return 相应会话信息
      */
     @GetMapping("/change")
-    public Conversation change(@RequestParam(value="id") Integer id){
+    public List<Message> change(@RequestParam(value="id") Integer id){
+
         log.info("切换至ID为{}的历史会话",id);
+        chatMemory.clear("default");
         return conversationService.change(id);
     }
 }

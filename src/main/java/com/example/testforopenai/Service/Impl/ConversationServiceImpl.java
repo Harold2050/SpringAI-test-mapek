@@ -67,7 +67,7 @@ public class ConversationServiceImpl implements ConversationService {
 
 
     @Override
-    public Conversation change(Integer id)
+    public List<Message> change(Integer id)
     {
         Conversation conversation= conversationMapper.get_by_id(id);
         List<Message> messages= messageMapper.get_by_convo_id(id);
@@ -90,7 +90,7 @@ public class ConversationServiceImpl implements ConversationService {
             System.out.println("Error clearing file content: " + e.getMessage());
         }
 
-        return conversation;
+        return messages;
     }
 
 
