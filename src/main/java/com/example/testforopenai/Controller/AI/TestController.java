@@ -1,4 +1,4 @@
-package com.example.testforopenai.Controller;
+package com.example.testforopenai.Controller.AI;
 
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.AbstractChatMemoryAdvisor;

@@ -1,7 +1,13 @@
-package com.example.testforopenai.tool;
+package com.example.testforopenai.Tool;
 
-import java.io.*;
-import java.util.*;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 public class ChatSplitter {
     /**
      * 读取聊天文件并将用户和助手的对话分开存储

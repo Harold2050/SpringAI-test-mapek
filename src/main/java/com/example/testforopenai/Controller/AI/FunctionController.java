@@ -1,4 +1,4 @@
-package com.example.testforopenai.Controller;
+package com.example.testforopenai.Controller.AI;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

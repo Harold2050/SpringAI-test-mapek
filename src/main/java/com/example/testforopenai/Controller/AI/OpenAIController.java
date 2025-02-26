@@ -1,4 +1,4 @@
-package com.example.testforopenai.Controller;
+package com.example.testforopenai.Controller.AI;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
