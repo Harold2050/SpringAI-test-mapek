@@ -41,6 +41,8 @@ public class TestController {
                 .content();
     }
 
+
+
     //value="/stream": 这是请求的 URL 路径。当客户端发起一个 GET 请求，且请求路径为 /stream 时，该方法将会被调用。
     //produces 属性用于指定该方法返回的数据类型(可能只有.stream需要这么设置，.call不需要)
     //"text/html": 表示返回的内容类型是 HTML 格式。也就是说，客户端期望接收到 HTML 格式的响应数据。
@@ -77,7 +79,6 @@ public class TestController {
                 ));
         return response.getResult().getOutput().getContent();
     }
-
     */
 
 }

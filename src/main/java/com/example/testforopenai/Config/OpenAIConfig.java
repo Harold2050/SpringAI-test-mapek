@@ -21,6 +21,7 @@ import org.springframework.core.io.Resource;
 @Configuration
 public class OpenAIConfig {
 
+
     //这里将chatClient配置成了Bean
     //依赖注入机制。Spring 会根据方法的参数类型（这里是 ChatClient）来寻找一个匹配的 Bean，并将其注入到这个方法中。
     //比如可以直接这样使用：

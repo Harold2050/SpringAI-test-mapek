@@ -8,15 +8,22 @@ import com.example.testforopenai.Mapper.MessageMapper;
 import com.example.testforopenai.Service.ConversationService;
 import com.example.testforopenai.Tool.ChatSplitterForLine;
 import com.example.testforopenai.Tool.FileClean;
+import com.example.testforopenai.Tool.HttpGetRequest;
+import org.springframework.ai.chat.memory.ChatMemory;
+import org.springframework.ai.chat.messages.AssistantMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class ConversationServiceImpl implements ConversationService {
+
+    @Autowired
+    ChatMemory chatMemory;
 
     @Autowired
     private ConversationMapper conversationMapper;
@@ -94,6 +101,44 @@ public class ConversationServiceImpl implements ConversationService {
     }
 
 
+    @Override
+    public String re_generate(Integer id)
+    {
+        //List<Message> messages= messageMapper.get_by_convo_id(id);
+        //int count=messages.size();
+        //好像根本就不用改数据库吧，只用改记忆里的东西
+
+        List<String> chats = new ArrayList<>();
+        List<org.springframework.ai.chat.messages.Message> list =  chatMemory.get("default",100);
+        int count=list.size();//获取当前message数，并把最后一条替换为重新生成的回答
+
+        String result = "";
+        HttpGetRequest httpGetRequest = new HttpGetRequest();
+        try {
+            String url = "http://localhost:8080/ai/chat";
+            String input = "请重新生成上一个问题的回答,这一次你的回答必须要与上一次有较大不同";
+            result = httpGetRequest.sendGetRequest(url, input);
+            // 输出返回的结果
+            System.out.println("重新生成的回答: " + result);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        //替换对话记忆中的最后一句
+        //AssistantMessage是Message的一种接口？
+        AssistantMessage assistantMessage = new AssistantMessage(result);
+        //啊？直接获取的list不可变？
+        List<org. springframework. ai. chat. messages. Message> mutableList = new ArrayList<>(list);
+        mutableList.set(count-1,assistantMessage);
+        chatMemory.clear("default");
+        chatMemory.add("default", mutableList);
+
+
+        return result;
+
+    }
+
+
 
     @Override
     public boolean check_exist(Conversation conversation)
@@ -115,6 +160,8 @@ public class ConversationServiceImpl implements ConversationService {
     {
         return conversationMapper.get_by_id(id);
     }
+
+
 
 
 }

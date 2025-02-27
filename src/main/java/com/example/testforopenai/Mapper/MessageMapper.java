@@ -20,6 +20,7 @@ public interface MessageMapper {
      * 插入消息
      * @param message
      */
+    @Options(useGeneratedKeys = true, keyProperty = "id")
     @Insert("insert into message (convo_id,message,`order`,status) values (#{convo_id},#{message},#{order},#{status})")
     public void insert(Message message);
 

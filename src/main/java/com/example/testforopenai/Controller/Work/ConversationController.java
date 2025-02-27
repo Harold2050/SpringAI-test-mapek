@@ -49,4 +49,15 @@ public class ConversationController {
         chatMemory.clear("default");
         return conversationService.change(id);
     }
+
+
+    /**
+     * 重新生成回答
+     * @return 重新生成的那句回答所属的消息
+     * @param id 该回答所属的会话id
+     */
+    @GetMapping("/regenerate")
+    public String re_generate(Integer id){
+        return conversationService.re_generate(id);
+    }
 }

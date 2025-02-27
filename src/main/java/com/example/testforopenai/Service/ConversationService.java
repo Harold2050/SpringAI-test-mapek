@@ -33,4 +33,12 @@ public interface ConversationService {
      * @param id  历史会话的ID
      */
     List<Message> change(Integer id);
+
+
+    /**
+     * 重新生成回答
+     * @param id  会话id
+     * @return
+     */
+    String re_generate(Integer id);
 }

@@ -9,6 +9,8 @@ import org.springframework.ai.chat.memory.ChatMemory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.List;
+
 @SpringBootTest
 class TestForOpenAiApplicationTests {
 
@@ -56,8 +58,7 @@ class TestForOpenAiApplicationTests {
 
     @Test
     public void test_ChatControl(){
-        System.out.println("===============================================\n");
-        System.out.println("真正的chatmemory"+chatMemory);
-        System.out.println("===============================================\n");
+        List<org.springframework.ai.chat.messages.Message> list =  chatMemory.get("default",100);
+        System.out.println(list);
     }
 }
