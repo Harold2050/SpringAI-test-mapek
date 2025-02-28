@@ -1,15 +1,16 @@
 package com.example.testforopenai.Controller.Work;
 
 
+import com.alibaba.fastjson.JSONObject;
 import com.example.testforopenai.Entity.Message;
 import com.example.testforopenai.Service.ConversationService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.memory.ChatMemory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
+import reactor.core.publisher.Flux;
 
 import java.util.List;
 
@@ -24,6 +25,9 @@ public class ConversationController {
 
     @Autowired
     ChatMemory chatMemory;
+
+    @Autowired
+    private ChatClient chatClient;
 
     /**
      * 保存会话,将当前会话存入conversation表中（更新conversation？），将每句话存入message表中
@@ -60,4 +64,39 @@ public class ConversationController {
     public String re_generate(Integer id){
         return conversationService.re_generate(id);
     }
+
+
+
+    /**
+     * 这个接口用于流式返回重新生成的内容
+     * @param id 会话id
+     * @return
+     */
+    @PostMapping(value="/re_generate",produces = "text/html;charset=UTF-8")
+    SseEmitter stream(@RequestBody  Integer id){
+        final SseEmitter emitter = new SseEmitter(Long.MAX_VALUE);
+        //调用service的重新生成方法
+        String input = conversationService.re_generate(id);
+        Flux<String> content= Flux.just(input);
+        Flux<com.alibaba.fastjson.JSONObject> jsonObjectFlux = content.map(str -> {
+            return JSONObject.parseObject("{\"data\":\"" + str + "\"}");
+        });
+        jsonObjectFlux.subscribe(
+                json -> {
+                    if (json != null) {
+                        try {
+                            emitter.send(json.toString());
+                        } catch (Exception ex) {
+                            emitter.completeWithError(ex);
+                        }
+                    }
+                },
+                error -> emitter.completeWithError(error),
+                () -> emitter.complete()
+        );
+        return emitter;
+    }
+
+
+
 }
